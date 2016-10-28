@@ -5,7 +5,7 @@ using ..DVID
 
 export ImageTileArray
 
-type ImageTileArray <: DVIDArray
+type ImageTileArray <: AbstractDVIDArray
     base        ::DVIDBase
 end
 
@@ -23,14 +23,27 @@ end
 
 function Base.eltype( A::ImageTileArray )
     UInt8
-end 
+end
 
-function Base.getindex(A::ImageTileArray, idxes::Union{Int, UnitRange} ...)
+function Base.getindex(A::ImageTileArray, idxes::Union{Integer, UnitRange} ...)
     sz = map(x->length(x), idxes)
     # origin = map(first, idxes)
-    link = "http://$(A.base.address):$(A.base.port)/api/node/$(A.base.node)/grayscale/raw/0_1_2/$(sz[1])_$(sz[2])_$(sz[3])/$(first(idxes[1]))_$(first(idxes[2]))_$(first(idxes[3]))"
+    # notethat the final coordinates are offset rather than julia 1-based coordinate
+    link = "http://$(A.base.address):$(A.base.port)/api/node/$(A.base.node)"*
+            "/grayscale/raw/0_1_2/$(sz[1])_$(sz[2])_$(sz[3])/"*
+            "$(first(idxes[1]-1))_$(first(idxes[2]-1))_$(first(idxes[3]-1))"
     resp = Requests.get(link)
     reshape(resp.data, sz)
+end
+
+function Base.setindex!(A::ImageTileArray, x::Array{T,N},
+                        idxes::Union{Integer, UnitRange} ...)
+    sz = map(x->length(x), idxes)
+    # origin = map(first, idxes)
+    link = "http://$(A.base.address):$(A.base.port)/api/node/$(A.base.node)"*
+            "/grayscale/raw/0_1_2/$(sz[1])_$(sz[2])_$(sz[3])/"*
+            "$(first(idxes[1]))_$(first(idxes[2]))_$(first(idxes[3]))"
+    resp = Requests.post()
 end
 
 end # end of module

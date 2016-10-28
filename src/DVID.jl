@@ -2,7 +2,7 @@ module DVID
 
 export DVIDArray
 
-abstract DVIDArray <: DenseArray
+abstract AbstractDVIDArray <: DenseArray
 
 include("base.jl")
 include("backends.jl")
