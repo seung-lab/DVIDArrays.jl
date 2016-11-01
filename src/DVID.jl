@@ -1,6 +1,6 @@
 module DVID
 
-export DVIDArray
+export AbstractDVIDArray
 
 abstract AbstractDVIDArray <: DenseArray
 

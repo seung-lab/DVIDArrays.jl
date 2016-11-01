@@ -32,12 +32,14 @@ function Base.getindex(A::ImageTileArray, idxes::Union{Integer, UnitRange} ...)
     link = "http://$(A.base.address):$(A.base.port)/api/node/$(A.base.node)"*
             "/grayscale/raw/0_1_2/$(sz[1])_$(sz[2])_$(sz[3])/"*
             "$(first(idxes[1]-1))_$(first(idxes[2]-1))_$(first(idxes[3]-1))"
+    # @show link
     resp = Requests.get(link)
     reshape(resp.data, sz)
 end
 
-function Base.setindex!(A::ImageTileArray, x::Array{T,N},
+function Base.setindex!{T,N}(A::ImageTileArray, x::Array{T,N},
                         idxes::Union{Integer, UnitRange} ...)
+    error("not working now!")
     sz = map(x->length(x), idxes)
     # origin = map(first, idxes)
     link = "http://$(A.base.address):$(A.base.port)/api/node/$(A.base.node)"*
