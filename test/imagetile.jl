@@ -1,5 +1,5 @@
-using DVID
-using DVID.ImageTileArrays
+using DVIDArrays
+using DVIDArrays.ImageTileArrays
 
 
 a = ImageTileArray("130.211.134.112", 8000, "5c")
