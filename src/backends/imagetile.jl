@@ -1,7 +1,7 @@
 module ImageTileArrays
 
 using Requests
-using ..DVID
+using ..DVIDArrays 
 
 export ImageTileArray
 
